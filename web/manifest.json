@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
     "name": "alhamdulilah",
     "short_name": "alhamdulilah",
+=======
+    "name": "project_frozenfood",
+    "short_name": "project_frozenfood",
+>>>>>>> 3efef7b76e7e06240bb5f2ce94d5ece0e7d62b65
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

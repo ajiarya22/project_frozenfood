@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
+<<<<<<< HEAD
         android:label="alhamdulilah"
+=======
+        android:label="project_frozenfood"
+>>>>>>> 3efef7b76e7e06240bb5f2ce94d5ece0e7d62b65
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
