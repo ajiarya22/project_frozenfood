@@ -36,7 +36,7 @@ class _KatalogPageState extends State<KatalogPage> {
     ],
     "Nugget": [
       {
-        "name": "Nugget Fiesta",
+        "name": "Nugget Fiesta Enak",
         "price": "Rp. 45.000",
         "image": "assets/nugget.jpg"
       },
