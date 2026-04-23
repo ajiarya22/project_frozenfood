@@ -1,6 +1,16 @@
 {
+<<<<<<< HEAD
     "name": "katalog_produk",
     "short_name": "katalog_produk",
+=======
+<<<<<<< HEAD
+    "name": "alhamdulilah",
+    "short_name": "alhamdulilah",
+=======
+    "name": "project_frozenfood",
+    "short_name": "project_frozenfood",
+>>>>>>> 3efef7b76e7e06240bb5f2ce94d5ece0e7d62b65
+>>>>>>> 3e1b5afeb8fd6bd1340c68cd3bf6f6abd72b0c9d
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

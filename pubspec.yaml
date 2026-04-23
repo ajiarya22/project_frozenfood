@@ -1,4 +1,22 @@
+<<<<<<< HEAD
 name: katalog_produk
+=======
+<<<<<<< HEAD
+name: alhamdulilah
+description: A new Flutter project.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+=======
+name: project_frozenfood
+>>>>>>> 3e1b5afeb8fd6bd1340c68cd3bf6f6abd72b0c9d
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -31,13 +49,33 @@ dependencies:
   flutter:
     sdk: flutter
 
+<<<<<<< HEAD
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+=======
+  http: ^1.2.0
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+>>>>>>> 3efef7b76e7e06240bb5f2ce94d5ece0e7d62b65
+>>>>>>> 3e1b5afeb8fd6bd1340c68cd3bf6f6abd72b0c9d
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/logo_frozen_food.png
+=======
+>>>>>>> 3e1b5afeb8fd6bd1340c68cd3bf6f6abd72b0c9d
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -62,9 +100,14 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
+<<<<<<< HEAD
       - assets/sosis.jpg
       - assets/nugget.jpg
       - assets/baksoikan.jpg
+=======
+    - assets/sosis.jpg
+    - assets/nugget.jpg
+>>>>>>> 3e1b5afeb8fd6bd1340c68cd3bf6f6abd72b0c9d
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -88,6 +131,7 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+<<<<<<< HEAD
   fonts:
     - family: Afacad
       fonts:
@@ -95,3 +139,9 @@ flutter:
           weight: 700
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+=======
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
+>>>>>>> 3efef7b76e7e06240bb5f2ce94d5ece0e7d62b65
+>>>>>>> 3e1b5afeb8fd6bd1340c68cd3bf6f6abd72b0c9d

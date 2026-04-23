@@ -4,7 +4,15 @@
 # This file should be version controlled and should not be manually edited.
 
 version:
+<<<<<<< HEAD
   revision: "67323de285b00232883f53b84095eb72be97d35c"
+=======
+<<<<<<< HEAD
+  revision: "48c32af0345e9ad5747f78ddce828c7f795f7159"
+=======
+  revision: "67323de285b00232883f53b84095eb72be97d35c"
+>>>>>>> 3efef7b76e7e06240bb5f2ce94d5ece0e7d62b65
+>>>>>>> 3e1b5afeb8fd6bd1340c68cd3bf6f6abd72b0c9d
   channel: "stable"
 
 project_type: app
@@ -13,6 +21,31 @@ project_type: app
 migration:
   platforms:
     - platform: root
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+      create_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+      base_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+    - platform: android
+      create_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+      base_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+    - platform: ios
+      create_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+      base_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+    - platform: linux
+      create_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+      base_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+    - platform: macos
+      create_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+      base_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+    - platform: web
+      create_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+      base_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+    - platform: windows
+      create_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+      base_revision: 48c32af0345e9ad5747f78ddce828c7f795f7159
+=======
+>>>>>>> 3e1b5afeb8fd6bd1340c68cd3bf6f6abd72b0c9d
       create_revision: 67323de285b00232883f53b84095eb72be97d35c
       base_revision: 67323de285b00232883f53b84095eb72be97d35c
     - platform: android
@@ -33,6 +66,10 @@ migration:
     - platform: windows
       create_revision: 67323de285b00232883f53b84095eb72be97d35c
       base_revision: 67323de285b00232883f53b84095eb72be97d35c
+<<<<<<< HEAD
+=======
+>>>>>>> 3efef7b76e7e06240bb5f2ce94d5ece0e7d62b65
+>>>>>>> 3e1b5afeb8fd6bd1340c68cd3bf6f6abd72b0c9d
 
   # User provided section
 

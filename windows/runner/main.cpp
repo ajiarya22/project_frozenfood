@@ -27,7 +27,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   FlutterWindow window(project);
   Win32Window::Point origin(10, 10);
   Win32Window::Size size(1280, 720);
+<<<<<<< HEAD
   if (!window.Create(L"katalog_produk", origin, size)) {
+=======
+<<<<<<< HEAD
+  if (!window.Create(L"alhamdulilah", origin, size)) {
+=======
+  if (!window.Create(L"project_frozenfood", origin, size)) {
+>>>>>>> 3efef7b76e7e06240bb5f2ce94d5ece0e7d62b65
+>>>>>>> 3e1b5afeb8fd6bd1340c68cd3bf6f6abd72b0c9d
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);
