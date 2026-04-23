@@ -19,7 +19,7 @@ class _KatalogPageState extends State<KatalogPage> {
   Map<String, List<Map<String, String>>> products = {
     "Sosis": [
       {
-        "name": "Sosis Sapi Kanzler Enak",
+        "name": "Sosis Sapi Kanzler",
         "price": "Rp. 38.000",
         "image": "assets/sosis.jpg"
       },
