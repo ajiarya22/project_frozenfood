@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'service/api_service.dart';
+import 'service/api_service.dart'; // pastikan path benar
 
 class Beranda extends StatefulWidget {
   const Beranda({super.key});
@@ -10,47 +10,59 @@ class Beranda extends StatefulWidget {
 
 class _BerandaState extends State<Beranda> {
   String search = "";
-  String selectedCategory = "Nugget";
+  String selectedCategory = "Sosis";
 
-  late Future<List> futureProduk;
+  List<dynamic> products = [];
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    futureProduk = ApiService.getProduk();
+    fetchProduk();
   }
 
-  /// FILTER (SUDAH AMAN)
-  List getFilteredProducts(List data) {
-    return data.where((p) {
-      String kategori = (p['nama_kategori'] ?? "").toString();
-      String nama = (p['nama_produk'] ?? "").toString();
-      String desk = (p['deskripsi'] ?? "").toString();
+  Future<void> fetchProduk() async {
+    setState(() => isLoading = true);
 
-      bool sesuaiKategori =
-          kategori.toLowerCase() == selectedCategory.toLowerCase();
+    var data = await ApiService.getProduk();
 
-      bool sesuaiSearch = search.isEmpty ||
-          nama.toLowerCase().contains(search.toLowerCase()) ||
-          desk.toLowerCase().contains(search.toLowerCase());
-
-      return sesuaiKategori && sesuaiSearch;
-    }).toList();
+    setState(() {
+      products = data;
+      isLoading = false;
+    });
   }
 
-  /// BUTTON KATEGORI
+  // ✅ SEARCH FIX (SUDAH DIPERBAIKI)
+  List<dynamic> get filteredProducts {
+  final keyword = search.toLowerCase();
+
+  return products.where((p) {
+    final nama = (p['nama'] ?? '').toString().toLowerCase();
+    final deskripsi = (p['deskripsi'] ?? '').toString().toLowerCase();
+    final kategori = (p['kategori'] ?? '').toString().toLowerCase();
+
+    // 🔥 kalau sedang search → global
+    if (keyword.isNotEmpty) {
+      return nama.contains(keyword) || deskripsi.contains(keyword);
+    }
+
+    // 🔥 kalau tidak search → pakai kategori
+    return kategori == selectedCategory.toLowerCase();
+  }).toList();
+}
   Widget categoryButton(String title) {
     bool isSelected = selectedCategory == title;
-
     return Expanded(
       child: GestureDetector(
         onTap: () {
           setState(() {
             selectedCategory = title;
           });
+          fetchProduk(); // ambil dari API
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 250),
+          curve: Curves.easeInOut,
           margin: const EdgeInsets.symmetric(horizontal: 5),
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
@@ -58,12 +70,21 @@ class _BerandaState extends State<Beranda> {
                 ? const Color(0xFF4919B9)
                 : const Color(0xFFD9D9D9),
             borderRadius: BorderRadius.circular(50),
+            boxShadow: isSelected
+                ? [
+                    const BoxShadow(
+                        color: Color(0x554919B9),
+                        blurRadius: 8,
+                        offset: Offset(0, 4))
+                  ]
+                : [],
           ),
           child: Center(
             child: Text(
               title,
               style: TextStyle(
                 color: isSelected ? Colors.white : Colors.black,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -73,8 +94,8 @@ class _BerandaState extends State<Beranda> {
     );
   }
 
-  /// CARD PRODUK
-  Widget productCard(Map product) {
+  // ✅ PRODUCT CARD (PAKAI API)
+  Widget productCard(dynamic product) {
     return Expanded(
       child: Container(
         height: 210,
@@ -83,62 +104,58 @@ class _BerandaState extends State<Beranda> {
         decoration: BoxDecoration(
           color: const Color(0xFF4919B9),
           borderRadius: BorderRadius.circular(12),
+          boxShadow: const [
+            BoxShadow(
+                color: Color(0x40000000),
+                blurRadius: 6,
+                offset: Offset(0, 4))
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// GAMBAR
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                "http://172.16.106.48/frozen_food/images/${product["gambar"] ?? ""}",
+                product["image_url"],
                 height: 80,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                loadingBuilder: (context, child, progress) {
-                  if (progress == null) return child;
-                  return const SizedBox(
-                    height: 80,
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                },
-                errorBuilder: (c, e, s) =>
-                    const SizedBox(height: 80, child: Icon(Icons.image)),
-              ),
-            ),
-
-            const SizedBox(height: 8),
-
-            Text(
-              product["nama_produk"] ?? "-",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 4),
-
-            Expanded(
-              child: Text(
-                product["deskripsi"] ?? "-",
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 10,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  height: 80,
+                  color: const Color(0xFF6B3DD1),
+                  child: const Center(
+                    child: Icon(Icons.image_not_supported,
+                        color: Colors.white54, size: 32),
+                  ),
                 ),
               ),
             ),
-
+            const SizedBox(height: 8),
             Text(
-              "Rp ${product["harga"] ?? "0"}",
+              product["nama"],
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14),
+            ),
+            const SizedBox(height: 4),
+            Expanded(
+              child: Text(
+                product["deskripsi"],
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style:
+                    const TextStyle(color: Colors.white70, fontSize: 10),
               ),
+            ),
+            Text(
+              "Rp ${product["harga"]}",
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -146,16 +163,32 @@ class _BerandaState extends State<Beranda> {
     );
   }
 
-  /// BUILD
   @override
   Widget build(BuildContext context) {
+    final data = filteredProducts;
+
+    List<Widget> productRows = [];
+    for (int i = 0; i < data.length; i += 2) {
+      productRows.add(
+        Row(
+          children: [
+            productCard(data[i]),
+            if (i + 1 < data.length)
+              productCard(data[i + 1])
+            else
+              const Expanded(child: SizedBox()),
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF9FA8DA), Colors.white],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
+            colors: [Color(0xFF9FA8DA), Color(0xFFFFFFFF)],
           ),
         ),
         child: SafeArea(
@@ -164,41 +197,58 @@ class _BerandaState extends State<Beranda> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 /// HEADER
                 Row(
-                  children: const [
-                    Icon(Icons.store,
-                        size: 60, color: Color(0xFF4919B9)),
-                    SizedBox(width: 10),
+                  children: [
+                    CircleAvatar(
+                      radius: 45,
+                      backgroundColor: Colors.white,
+                      backgroundImage:
+                          const AssetImage("assets/logo_refi.png"),
+                    ),
+                    const SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Selamat Datang Di",
-                            style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold)),
-                        Text("REFI FROZEN FOOD",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF4919B9))),
+                      children: const [
+                        Text(
+                          "Selamat Datang Di",
+                          style: TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1F21AA)),
+                        ),
+                        Text(
+                          "REFI FROZEN FOOD",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
 
                 const SizedBox(height: 20),
 
                 /// SEARCH
-                TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      search = value;
-                    });
-                  },
-                  decoration: const InputDecoration(
-                    hintText: "Search",
-                    prefixIcon: Icon(Icons.search),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFF8F8),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        search = value.trim();
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      hintText: "Search",
+                      border: InputBorder.none,
+                      icon: Icon(Icons.search),
+                    ),
                   ),
                 ),
 
@@ -215,64 +265,36 @@ class _BerandaState extends State<Beranda> {
 
                 const SizedBox(height: 20),
 
-                Text(selectedCategory,
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
+                /// LABEL
+                Text(
+                  selectedCategory,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF4919B9)),
+                ),
 
                 const SizedBox(height: 10),
 
-                /// FUTURE BUILDER FINAL
-                FutureBuilder<List>(
-                  future: futureProduk,
-                  builder: (context, snapshot) {
-
-                    if (snapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return const Center(
-                          child: CircularProgressIndicator());
-                    }
-
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text("Error: ${snapshot.error}"),
-                      );
-                    }
-
-                    if (!snapshot.hasData ||
-                        snapshot.data!.isEmpty) {
-                      return const Center(
-                        child: Text("Data kosong"),
-                      );
-                    }
-
-                    var products =
-                        getFilteredProducts(snapshot.data!);
-
-                    if (products.isEmpty) {
-                      return const Center(
-                        child: Text("Produk tidak ditemukan"),
-                      );
-                    }
-
-                    List<Widget> rows = [];
-                    for (int i = 0; i < products.length; i += 2) {
-                      rows.add(
-                        Row(
-                          children: [
-                            productCard(products[i]),
-                            if (i + 1 < products.length)
-                              productCard(products[i + 1])
-                            else
-                              const Expanded(child: SizedBox()),
-                          ],
-                        ),
-                      );
-                    }
-
-                    return Column(children: rows);
-                  },
-                ),
+                /// PRODUK
+                if (isLoading)
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 40),
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                else if (data.isEmpty)
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 40),
+                      child: Text("Produk tidak ditemukan",
+                          style: TextStyle(
+                              fontSize: 16, color: Colors.grey)),
+                    ),
+                  )
+                else
+                  ...productRows,
               ],
             ),
           ),
